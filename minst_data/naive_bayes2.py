@@ -3,9 +3,11 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 import math
 from math import *
+import numpy as np
+import matplotlib.pyplot as plt
 class NaiveBayes:
     
-    def __init__(self):
+    def __init__(self,smoothing_factor):
         (self.train_images, self.train_labels), (self.test_images, self.test_labels) = tf.keras.datasets.mnist.load_data()
         self.class_group = defaultdict(list)
         self.train_images = self.train_images.reshape((-1, 784))
@@ -14,7 +16,7 @@ class NaiveBayes:
         self.test_images  = self.normalize(self.test_images)
         self.class_stat = defaultdict(list)
         self.divide_by_class()
-        self.smoothing_factor = 0.1
+        self.smoothing_factor = smoothing_factor
 
         
     def divide_by_class(self):
@@ -25,7 +27,14 @@ class NaiveBayes:
         
     def normalize(self, image_list):
         # Preprocess the image data, e.g., normalize pixel values
-        normalized_images = image_list / 255.0
+        normalized_images = (image_list / 255.0) ** 2
+        # for image in image_list:
+        #     for index,pixel in enumerate(image):
+        #         if pixel == 0:
+        #             continue
+        #         else:
+        #             image[index] = 1
+        # return image_list
         return normalized_images
         
     def prepare(self,group_list):
@@ -47,9 +56,9 @@ class NaiveBayes:
 
             
     def probability(self,x, mean, stdev):
-        smoothing_factor = 0.1
-        exponent = -((x - mean) ** 2) / (2 * stdev ** 2 + smoothing_factor)
-        denominator = math.sqrt(2 * math.pi * stdev ** 2 + smoothing_factor)
+        
+        exponent = -((x - mean) ** 2) / (2 * stdev ** 2 + self.smoothing_factor)
+        denominator = math.sqrt(2 * math.pi * stdev ** 2 + self.smoothing_factor)
         return math.exp(exponent) / denominator
     def class_probability(self,data):
         #let's get the mean representation of our incoming data
@@ -58,11 +67,12 @@ class NaiveBayes:
         #let's calculate the probability of each class
         for key in self.class_stat:
             #probability of the class
-            class_prob[key] = math.log(len(self.class_group[key])/len(self.train_images))
+            class_prob[key] += math.log(len(self.class_group[key])/len(self.train_images))
             for index,value in enumerate(data):
                 if value == 0:
                     continue
-                class_prob[key] += math.log(self.smoothing_factor + self.probability(value,self.class_stat[key][0][index],self.class_stat[key][1][index]))
+                conditional_probability = self.probability(value,self.class_stat[key][0][index],self.class_stat[key][1][index])
+                class_prob[key] += math.log(conditional_probability)
             
         return class_prob
     
@@ -82,16 +92,28 @@ class NaiveBayes:
         
     
     
-obj = NaiveBayes()
-# let count how many tests we got right
-count = 0
-for index,test_image in enumerate(obj.test_images):
-    if obj.predict(test_image) == obj.test_labels[index]:
-       count += 1 
-    else:
-        pass
+
+smoothing_factors = [0.1,0.5,1.0,10,100]
+accuracy = []
+for smoothing_factor in smoothing_factors:
+    obj = NaiveBayes(smoothing_factor)
+# smoothing factors
+    count = 0
+    for index,test_image in enumerate(obj.test_images):
+        if obj.predict(test_image) == obj.test_labels[index]:
+            count += 1 
+        else:
+            pass
+    accuracy.append(count/len(obj.test_images)*100)    
+    print("Accuracy: ",count/len(obj.test_images)*100,"%")
     
-print("Accuracy: ",count/len(obj.test_images)*100,"%")
+    
+plt.plot(smoothing_factors, accuracy, marker='o')
+plt.xlabel('Smoothing factor')
+plt.ylabel('Accuracy (%)')
+plt.title('Accuracy vs. Smoothing factor')
+plt.grid(True)
+plt.show()
 
         
         
