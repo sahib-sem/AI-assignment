@@ -20,16 +20,22 @@ class NaiveBayes:
             self.class_group[image_class].append(image)
         self.data_statistics()
         
-    def prepare(image_list):
-        pass
+    def prepare(self):
+        mean = []
+        stdv = []
+        for lis in zip(*self.train_images):
+            mean.append(self.mean(lis))
+            stdv.append(self.standard_div(lis))
+            
+        return mean,stdv
         
             
     def data_statistics(self):
         for key in self.class_group:
-            flat_list = [item for sublist in self.class_group[key] for item in sublist]
+            mean,stdv = self.prepare()
             #let's calculate mean and standard deviation of each class
-            self.class_stat[key].append(self.mean(flat_list))
-            self.class_stat[key].append(self.standard_div(flat_list))
+            self.class_stat[key].append(mean)
+            self.class_stat[key].append(stdv)
 
             
     def probability(self,x, mean, stdev):
@@ -37,11 +43,12 @@ class NaiveBayes:
         return (1 / (sqrt(2 * pi) * stdev)) * exponent
     def class_probability(self,data):
         #let's get the mean representation of our incoming data
-        stdv = self.standard_div(data)
-        class_prob = defaultdict()
+      
+        class_prob = defaultdict(int)
         #let's calculate the probability of each class
         for key in self.class_stat:
-            class_prob[key] = (self.probability(stdv,self.class_stat[key][0],self.class_stat[key][1]))  
+            for index,value in enumerate(data):
+                class_prob[key] *= self.probability(value,self.class_stat[key][0][index],self.class_stat[key][1][index])
             
         return class_prob
     
