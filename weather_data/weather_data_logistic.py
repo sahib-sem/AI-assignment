@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 
 class LogisticRegression:
     def __init__(self, train_images,train_labels,learning_rate=0.01, num_iterations=100):
+        
         self.train_images = train_images
         self.train_labels = train_labels
         self.learning_rate = learning_rate

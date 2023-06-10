@@ -1,9 +1,10 @@
 import tensorflow as tf
 import numpy as np
 import math
+import matplotlib.pyplot as plt
 
 class LogisticRegression:
-    def __init__(self, learning_rate=0.01, num_iterations=1):
+    def __init__(self, learning_rate=0.01, num_iterations=10):
         (self.train_images, self.train_labels), (self.test_images, self.test_labels) = tf.keras.datasets.mnist.load_data()
         self.train_images = self.train_images.reshape((-1, 784))
         self.test_images = self.test_images.reshape((-1, 784))
@@ -59,3 +60,10 @@ for learning_rate in learning_rates:
             count += 1
     accuracy.append(count / len(obj.test_images) * 100)
     print("Accuracy:", count / len(obj.test_images) * 100, "%")
+
+plt.plot(learning_rates, accuracy, marker='o')
+plt.xlabel('Learning Rate')
+plt.ylabel('Accuracy (%)')
+plt.title('Accuracy vs. Learning Rate')
+plt.grid(True)
+plt.show()
