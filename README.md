@@ -4,7 +4,7 @@ Linear regression, Logistic regression, and Naive Bayes to the mnist, BBC, and w
 
  # **Tools**
 - Python was used for development.
-- The mnist data set was acquired from the tensor flow, a machine learning platform
+- The mnist data set was acquired from tensor flow, a machine learning platform
 - BBC and weather data sets were retrieved from CSV files.
 - matplotlib was used to prepare the graphs that depicted the accuracy level of each classification technique
   for different parameters.
