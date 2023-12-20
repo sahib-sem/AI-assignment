@@ -1,6 +1,6 @@
 # **Machine Learning**
-In this project, we tried to apply the three machine-learning classification techniques
-Linear regression, Logistic regression, and Naive Bayes to the mnist, BBC, and weather data set.
+In this project, we tried to apply the two machine-learning classification techniques
+Logistic regression, and Naive Bayes to the mnist, BBC, and weather data set.
 
  # **Tools**
 - Python was used for development.
@@ -10,7 +10,7 @@ Linear regression, Logistic regression, and Naive Bayes to the mnist, BBC, and w
   for different parameters.
 
 # **How to use**
-1. Clone this repository to your local machine. `git clone nahom4/Ai`
+1. Clone this repository to your local machine. `git clone sahib-sem/AI-assignment`
 2. Open the folder in a code editor.
 3. install tensor flow `pip install tensorflow`.
 4. install mathplotlib `pip install mathplotlib`.
