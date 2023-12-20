@@ -10,7 +10,7 @@ Logistic regression, and Naive Bayes to the mnist, BBC, and weather data set.
   for different parameters.
 
 # **How to use**
-1. Clone this repository to your local machine. `git clone [sahib-sem/AI-assignment](https://github.com/sahib-sem/AI-assignment.git)`
+1. Clone this repository to your local machine. `git clone https://github.com/sahib-sem/AI-assignment.git`
 2. Open the folder in a code editor.
 3. install tensor flow `pip install tensorflow`.
 4. install mathplotlib `pip install mathplotlib`.
